@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curl Compass — Find Your Perfect Hair Routine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #FBF7F2;
+    --bark: #3D2B1F;
+    --bark-light: #6B4C3B;
+    --gold: #C8943A;
+    --gold-light: #F0C97A;
+    --gold-pale: #FDF3E0;
+    --rose: #C4776A;
+    --sage: #7A9E8A;
+    --sage-light: #EAF2EC;
+    --white: #FFFFFF;
+    --border: rgba(61,43,31,0.12);
+    --border-strong: rgba(61,43,31,0.25);
+    --text-muted: #8A7060;
+    --radius: 16px;
+    --radius-sm: 8px;
+    --shadow: 0 2px 16px rgba(61,43,31,0.08);
+    --shadow-lg: 0 8px 40px rgba(61,43,31,0.14);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--bark);
+    min-height: 100vh;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(251,247,242,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--bark);
+    letter-spacing: -0.3px;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-badge {
+    font-size: 12px;
+    background: var(--gold-pale);
+    color: var(--gold);
+    border: 1px solid rgba(200,148,58,0.25);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  /* SCREENS */
+  .screen { display: none; animation: fadeUp 0.45s cubic-bezier(0.22,1,0.36,1); }
+  .screen.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== HERO ===== */
+  #screen-home {
+    min-height: calc(100vh - 60px);
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 60px 24px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero-inner { max-width: 560px; margin: 0 auto; text-align: center; position: relative; z-index: 2; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 500; color: var(--gold);
+    background: var(--gold-pale);
+    border: 1px solid rgba(200,148,58,0.25);
+    padding: 6px 14px; border-radius: 20px;
+    margin-bottom: 28px;
+  }
+  .hero-eyebrow::before { content: '✦'; font-size: 10px; }
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(38px, 7vw, 60px);
+    line-height: 1.1;
+    color: var(--bark);
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+  }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 420px;
+    margin: 0 auto 40px;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--bark);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px; font-weight: 500;
+    padding: 16px 36px;
+    border-radius: 50px;
+    border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    text-decoration: none;
+  }
+  .btn-primary:hover { background: var(--bark-light); transform: translateY(-2px); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary svg { transition: transform 0.2s; }
+  .btn-primary:hover svg { transform: translateX(4px); }
+  .hero-stats {
+    display: flex; gap: 32px; justify-content: center;
+    margin-top: 56px;
+    padding-top: 36px;
+    border-top: 1px solid var(--border);
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px; color: var(--bark);
+    display: block;
+  }
+  .stat-label { font-size: 13px; color: var(--text-muted); }
+
+  /* Decorative blobs */
+  .blob {
+    position: absolute; border-radius: 50%;
+    pointer-events: none; z-index: 1;
+  }
+  .blob-1 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(200,148,58,0.12) 0%, transparent 70%);
+    top: -100px; right: -100px;
+  }
+  .blob-2 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(196,119,106,0.1) 0%, transparent 70%);
+    bottom: 0; left: -80px;
+  }
+
+  /* ===== QUIZ ===== */
+  #screen-quiz {
+    min-height: calc(100vh - 60px);
+    display: flex; flex-direction: column;
+    padding: 32px 24px 60px;
+  }
+  .quiz-inner { max-width: 580px; margin: 0 auto; width: 100%; }
+  .quiz-progress-wrap {
+    margin-bottom: 36px;
+  }
+  .quiz-progress-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
+    font-size: 13px; color: var(--text-muted); font-weight: 500;
+  }
+  .quiz-progress-bar {
+    height: 5px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .quiz-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--rose));
+    border-radius: 10px;
+    transition: width 0.5s cubic-bezier(0.22,1,0.36,1);
+  }
+  .quiz-q-num {
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 10px;
+  }
+  .quiz-q-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(22px, 4vw, 30px);
+    line-height: 1.2;
+    color: var(--bark);
+    margin-bottom: 28px;
+  }
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+  .option-btn {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 400;
+    color: var(--bark);
+    transition: border-color 0.18s, background 0.18s, transform 0.15s;
+    position: relative;
+  }
+  .option-btn:hover {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+    transform: translateY(-2px);
+  }
+  .option-btn.selected {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+    font-weight: 500;
+  }
+  .option-btn.selected::after {
+    content: '✓';
+    position: absolute; right: 16px;
+    color: var(--gold); font-weight: 600; font-size: 14px;
+  }
+  .option-icon {
+    width: 38px; height: 38px; flex-shrink: 0;
+    border-radius: 10px;
+    background: var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .quiz-nav {
+    display: flex; gap: 12px; align-items: center; justify-content: space-between;
+  }
+  .btn-ghost {
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 50px;
+    padding: 12px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500;
+    color: var(--bark-light);
+    cursor: pointer;
+    transition: border-color 0.18s, color 0.18s;
+  }
+  .btn-ghost:hover { border-color: var(--bark); color: var(--bark); }
+  .btn-next {
+    flex: 1;
+    background: var(--bark);
+    color: var(--cream);
+    border: none;
+    border-radius: 50px;
+    padding: 14px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px; font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s, transform 0.15s;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .btn-next.enabled { opacity: 1; pointer-events: auto; }
+  .btn-next.enabled:hover { background: var(--bark-light); transform: translateY(-1px); }
+
+  /* ===== RESULTS ===== */
+  #screen-results {
+    padding: 40px 24px 80px;
+  }
+  .results-inner { max-width: 700px; margin: 0 auto; }
+  .results-hero {
+    text-align: center;
+    padding: 40px 24px;
+    background: var(--bark);
+    border-radius: 24px;
+    margin-bottom: 32px;
+    position: relative; overflow: hidden;
+  }
+  .results-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 70% 30%, rgba(200,148,58,0.25) 0%, transparent 60%);
+  }
+  .results-badge {
+    display: inline-block;
+    background: rgba(200,148,58,0.2);
+    border: 1px solid rgba(200,148,58,0.4);
+    color: var(--gold-light);
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 6px 16px; border-radius: 20px;
+    margin-bottom: 16px;
+    position: relative; z-index: 1;
+  }
+  .results-type {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(40px, 8vw, 64px);
+    color: var(--cream);
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+    position: relative; z-index: 1;
+  }
+  .results-type-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(20px, 4vw, 28px);
+    color: var(--gold-light);
+    font-style: italic;
+    margin-bottom: 12px;
+    position: relative; z-index: 1;
+  }
+  .results-tagline {
+    color: rgba(251,247,242,0.7);
+    font-size: 15px;
+    max-width: 400px;
+    margin: 0 auto;
+    position: relative; z-index: 1;
+  }
+
+  /* Result sections */
+  .section-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px;
+  }
+  .section-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .icon-gold { background: var(--gold-pale); }
+  .icon-sage { background: var(--sage-light); }
+  .icon-rose { background: #FDF0EE; }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--bark);
+  }
+  .routine-steps { list-style: none; }
+  .routine-step {
+    display: flex; gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .routine-step:last-child { border-bottom: none; padding-bottom: 0; }
+  .step-num {
+    width: 28px; height: 28px; flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--bark);
+    color: var(--cream);
+    font-size: 13px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 2px;
+  }
+  .step-content {}
+  .step-name { font-weight: 500; color: var(--bark); margin-bottom: 3px; }
+  .step-desc { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+  .tips-grid { display: grid; gap: 12px; }
+  .tip-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 14px;
+    background: var(--cream);
+    border-radius: var(--radius-sm);
+  }
+  .tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .tip-text { font-size: 14px; color: var(--bark-light); line-height: 1.55; }
+  .tip-text strong { color: var(--bark); font-weight: 500; }
+
+  /* Products */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+  .product-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .product-img {
+    height: 140px;
+    background: linear-gradient(135deg, var(--gold-pale) 0%, #F9EBD4 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    position: relative;
+  }
+  .product-badge {
+    position: absolute; top: 10px; left: 10px;
+    background: var(--sage);
+    color: white;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 3px 8px; border-radius: 20px;
+    text-transform: uppercase;
+  }
+  .product-body { padding: 14px; }
+  .product-name { font-weight: 500; font-size: 14px; color: var(--bark); margin-bottom: 2px; line-height: 1.3; }
+  .product-brand { font-size: 11px; font-weight: 600; color: var(--gold); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .product-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.5; }
+  .btn-view {
+    display: block; width: 100%;
+    background: none;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 8px;
+    padding: 9px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500;
+    color: var(--bark);
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.18s, border-color 0.18s;
+    /* AFFILIATE LINK PLACEHOLDER: replace href="#" with affiliate URL */
+  }
+  .btn-view:hover { background: var(--bark); color: var(--cream); border-color: var(--bark); }
+
+  /* Result actions */
+  .results-actions {
+    display: flex; gap: 12px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .btn-save {
+    flex: 1; min-width: 140px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--bark);
+    color: var(--cream);
+    border: none; border-radius: 50px;
+    padding: 14px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-save:hover { background: var(--bark-light); }
+  .btn-restart {
+    flex: 1; min-width: 140px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: none;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 50px;
+    padding: 14px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500;
+    color: var(--bark);
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .btn-restart:hover { border-color: var(--bark); background: var(--cream); }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: var(--bark);
+    color: var(--cream);
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 14px; font-weight: 500;
+    white-space: nowrap;
+    z-index: 1000;
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    box-shadow: 0 4px 24px rgba(61,43,31,0.3);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Section label */
+  .section-label {
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .hero-stats { gap: 20px; }
+    .options-grid { grid-template-columns: 1fr; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .results-actions { flex-direction: column; }
+    nav { padding: 0 16px; }
+    #screen-home, #screen-results { padding-left: 16px; padding-right: 16px; }
+    #screen-quiz { padding-left: 16px; padding-right: 16px; }
+  }
+  @media (max-width: 400px) {
+    .products-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .screen { animation: none; }
+    .option-btn:hover, .btn-primary:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Curl<span>Compass</span></div>
+  <div class="nav-badge">Free Tool</div>
+</nav>
+
+<!-- HOME SCREEN -->
+<div id="screen-home" class="screen active">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Personalized Hair Care</div>
+    <h1 class="hero-title">Find Your <em>Perfect</em> Hair Routine</h1>
+    <p class="hero-sub">Answer a few questions and get a personalized routine based on your hair type and goals — no experience needed.</p>
+    <button class="btn-primary" onclick="startQuiz()">
+      Start the Quiz
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">5</span>
+        <span class="stat-label">Questions</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">2 min</span>
+        <span class="stat-label">To complete</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">Free</span>
+        <span class="stat-label">Always</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-inner">
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-header">
+        <span id="q-label">Question 1 of 5</span>
+        <span id="q-pct">20%</span>
+      </div>
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="progress-fill" style="width:20%"></div>
+      </div>
+    </div>
+    <div id="quiz-body"></div>
+    <div class="quiz-nav">
+      <button class="btn-ghost" id="btn-back" onclick="goBack()">← Back</button>
+      <button class="btn-next" id="btn-next" onclick="goNext()">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div id="screen-results" class="screen">
+  <div class="results-inner" id="results-content"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  {
+    id: 'pattern',
+    label: 'Hair pattern',
+    question: 'What best describes your hair pattern?',
+    options: [
+      { value: '3A', icon: '〰', label: '3A', desc: 'Loose, large spirals' },
+      { value: '3B', icon: '🌀', label: '3B', desc: 'Medium, springy ringlets' },
+      { value: '3C', icon: '🌿', label: '3C', desc: 'Tight, dense corkscrews' },
+      { value: '4A', icon: '💫', label: '4A', desc: 'Defined S-pattern coils' },
+      { value: '4B', icon: '✨', label: '4B', desc: 'Z-pattern, less definition' },
+      { value: '4C', icon: '🌸', label: '4C', desc: 'Tightest coils, shrinkage' },
+      { value: 'unsure', icon: '❓', label: 'Not sure', desc: "I'll find out!" },
+    ]
+  },
+  {
+    id: 'goal',
+    label: 'Primary goal',
+    question: 'What is your primary hair goal?',
+    options: [
+      { value: 'growth',    icon: '🌱', label: 'Hair growth',        desc: 'Longer, stronger hair' },
+      { value: 'moisture',  icon: '💧', label: 'Moisture',           desc: 'Combat dryness' },
+      { value: 'definition',icon: '🌀', label: 'Curl definition',    desc: 'Enhanced curl pattern' },
+      { value: 'repair',    icon: '🔧', label: 'Damage repair',      desc: 'Restore & strengthen' },
+      { value: 'general',   icon: '💚', label: 'General healthy hair',desc: 'Overall wellness' },
+    ]
+  },
+  {
+    id: 'protective',
+    label: 'Protective styles',
+    question: 'How often do you wear protective styles?',
+    options: [
+      { value: 'never',     icon: '🙅', label: 'Never',     desc: 'I wear my hair out' },
+      { value: 'sometimes', icon: '🔄', label: 'Sometimes', desc: 'Occasionally' },
+      { value: 'often',     icon: '✅', label: 'Often',     desc: 'Most of the time' },
+    ]
+  },
+  {
+    id: 'budget',
+    label: 'Budget',
+    question: 'What is your product budget?',
+    options: [
+      { value: 'low',    icon: '🪙', label: 'Under $20',  desc: 'Budget-friendly picks' },
+      { value: 'mid',    icon: '💵', label: '$20 – $50',  desc: 'Mid-range options' },
+      { value: 'high',   icon: '💎', label: '$50+',       desc: 'Premium products' },
+    ]
+  },
+  {
+    id: 'dryness',
+    label: 'Dryness level',
+    question: 'How often does your hair feel dry?',
+    options: [
+      { value: 'rarely',     icon: '😊', label: 'Rarely',     desc: 'Usually moisturized' },
+      { value: 'sometimes',  icon: '😐', label: 'Sometimes',  desc: 'Hit or miss' },
+      { value: 'frequently', icon: '😟', label: 'Frequently', desc: 'Almost always dry' },
+    ]
+  }
+];
+
+let current = 0;
+let answers = {};
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  el.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function startQuiz() {
+  current = 0;
+  answers = {};
+  renderQuestion();
+  showScreen('screen-quiz');
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  const pct = Math.round(((current + 1) / questions.length) * 100);
+  document.getElementById('q-label').textContent = `Question ${current + 1} of ${questions.length}`;
+  document.getElementById('q-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('btn-back').style.display = current === 0 ? 'none' : 'flex';
+  document.getElementById('btn-next').textContent = current === questions.length - 1 ? 'See My Results →' : 'Continue →';
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.classList.remove('enabled');
+
+  const body = document.getElementById('quiz-body');
+  body.innerHTML = `
+    <div class="quiz-q-num">0${current + 1} / 0${questions.length}</div>
+    <h2 class="quiz-q-title">${q.question}</h2>
+    <div class="options-grid" id="options-grid"></div>
+  `;
+
+  const grid = document.getElementById('options-grid');
+  q.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (answers[q.id] === opt.value ? ' selected' : '');
+    btn.innerHTML = `<div class="option-icon">${opt.icon}</div><div><div style="font-weight:500">${opt.label}</div><div style="font-size:13px;color:var(--text-muted);margin-top:2px">${opt.desc}</div></div>`;
+    btn.onclick = () => selectOption(q.id, opt.value, btn);
+    grid.appendChild(btn);
+  });
+
+  if (answers[q.id]) {
+    document.getElementById('btn-next').classList.add('enabled');
+  }
+}
+
+function selectOption(qid, val, el) {
+  answers[qid] = val;
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('btn-next').classList.add('enabled');
+}
+
+function goNext() {
+  if (!document.getElementById('btn-next').classList.contains('enabled')) return;
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    buildResults();
+    showScreen('screen-results');
+  }
+}
+
+function goBack() {
+  if (current > 0) { current--; renderQuestion(); }
+  else showScreen('screen-home');
+}
+
+/* ===== RESULT ENGINE ===== */
+function buildResults() {
+  const a = answers;
+  let routine = getRoutine(a);
+  const products = getRecommendedProducts(a);
+  const el = document.getElementById('results-content');
+
+  el.innerHTML = `
+    <div class="results-hero">
+      <div class="results-badge">Your Hair Profile</div>
+      <div class="results-type">${routine.typeCode}</div>
+      <div class="results-type-name">${routine.typeName}</div>
+      <p class="results-tagline">${routine.tagline}</p>
+    </div>
+
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-icon icon-gold">🗓️</div>
+        <div>
+          <div class="section-label">Your Routine</div>
+          <h3 class="section-title">Recommended Wash Day</h3>
+        </div>
+      </div>
+      <ul class="routine-steps">
+        ${routine.washDay.map((s, i) => `
+          <li class="routine-step">
+            <div class="step-num">${i + 1}</div>
+            <div class="step-content">
+              <div class="step-name">${s.name}</div>
+              <div class="step-desc">${s.desc}</div>
+            </div>
+          </li>
+        `).join('')}
+      </ul>
+    </div>
+
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-icon icon-sage">💧</div>
+        <div>
+          <div class="section-label">Moisture Tips</div>
+          <h3 class="section-title">Keep Your Curls Hydrated</h3>
+        </div>
+      </div>
+      <div class="tips-grid">
+        ${routine.moistureTips.map(t => `
+          <div class="tip-item">
+            <div class="tip-icon">${t.icon}</div>
+            <div class="tip-text">${t.text}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-icon icon-rose">🛍️</div>
+        <div>
+          <div class="section-label">Recommended Products</div>
+          <h3 class="section-title">Curated for Your Hair Type</h3>
+        </div>
+      </div>
+      <div class="products-grid">
+        ${products.map(p => `
+          <div class="product-card">
+            <div class="product-img">
+              ${p.image}
+              <span class="product-badge">${p.category}</span>
+            </div>
+            <div class="product-body">
+              <div class="product-name">${p.name}</div>
+              <div class="product-brand">${p.brand}</div>
+              <div class="product-desc">${p.description}</div>
+              <button class="btn-view" onclick="handleProduct('${p.affiliateLink}')">View Product</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="results-actions">
+      <button class="btn-save" onclick="saveResults()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 11l6 3 6-3M2 8l6 3 6-3M2 5l6-3 6 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Save Results
+      </button>
+      <button class="btn-restart" onclick="restartQuiz()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 8A5.5 5.5 0 1 0 4 4.5M2.5 2v2.5H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Retake Quiz
+      </button>
+    </div>
+  `;
+}
+
+/* =============================================================
+   PRODUCT DATABASE
+   ---------------------------------------------------------------
+   To add a new product: paste a new object into the array below.
+   The recommendation engine will automatically include it.
+   Never edit getRecommendedProducts() when adding products.
+
+   Budget values:  "low" = under $20 | "mid" = $20–$50 | "high" = $50+
+   Hair types:     "3A" "3B" "3C" "4A" "4B" "4C"  (use "all" shorthand array below)
+   Goals:          "growth" | "moisture" | "definition" | "repair" | "general"
+   affiliateLink:  leave "" — paste your Amazon affiliate URL here later
+   image:          an emoji used as the product image placeholder
+   ============================================================= */
+
+// Shorthand arrays to avoid repeating the same values on every product
+const ALL_TYPES  = ["3A","3B","3C","4A","4B","4C"];
+const TYPE3      = ["3A","3B","3C"];
+const TYPE4      = ["4A","4B","4C"];
+const TYPE3C_UP  = ["3C","4A","4B","4C"];
+const ALL_BUDGET = ["low","mid","high"];
+const MID_HIGH   = ["mid","high"];
+
+const productDatabase = [
+
+  // ── SHAMPOOS ─────────────────────────────────────────────────
+  {
+    id: "shea-001",
+    name: "Moisture Retention Shampoo",
+    brand: "SheaMoisture",
+    category: "Shampoo",
+    description: "Raw shea butter formula that cleanses without stripping. Great for dry, brittle curls.",
+    image: "🧴",
+    affiliateLink: "",
+    budget: ALL_BUDGET,
+    hairTypes: ALL_TYPES,
+    goals: ["moisture","repair","general"]
+  },
+  {
+    id: "asiam-001",
+    name: "Curl & Shine Shampoo",
+    brand: "As I Am",
+    category: "Shampoo",
+    description: "Coconut water-infused sulfate-free shampoo that cleanses and adds shine.",
+    image: "🧴",
+    affiliateLink: "",
+    budget: ALL_BUDGET,
+    hairTypes: ALL_TYPES,
+    goals: ["definition","moisture","general"]
+  },
+  {
+    id: "cantu-001",
+    name: "Sulfate-Free Cleansing Cream Shampoo",
+    brand: "Cantu",
+    category: "Shampoo",
+    description: "Gentle cleansing cream enriched with shea butter. Ideal for color-treated and relaxed hair.",
+    image: "🧴",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: ALL_TYPES,
+    goals: ["moisture","repair","general"]
+  },
+  {
+    id: "mielle-001",
+    name: "Babassu Oil & Mint Deep Conditioning Shampoo",
+    brand: "Mielle",
+    category: "Shampoo",
+    description: "Mint-infused scalp-stimulating shampoo that promotes growth while conditioning.",
+    image: "🧴",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["growth","moisture","general"]
+  },
+  {
+    id: "tgin-001",
+    name: "Moisture Rich Sulfate Free Shampoo",
+    brand: "TGIN",
+    category: "Shampoo",
+    description: "Natural oils and aloe keep coils cleansed and moisturized in one step.",
+    image: "🧴",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: TYPE4,
+    goals: ["moisture","general"]
+  },
+  {
+    id: "doux-001",
+    name: "Sucka Free Shampoo",
+    brand: "The Doux",
+    category: "Shampoo",
+    description: "Creamy, sulfate-free cleanser that primes curls for maximum moisture absorption.",
+    image: "🧴",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["moisture","definition","general"]
+  },
+  {
+    id: "brio-001",
+    name: "Scalp Revival Charcoal + Coconut Oil Micro-Exfoliating Shampoo",
+    brand: "Briogeo",
+    category: "Shampoo",
+    description: "Charcoal and coconut oil deeply cleanse the scalp while balancing moisture.",
+    image: "🧴",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: ALL_TYPES,
+    goals: ["growth","repair","general"]
+  },
+  {
+    id: "mel-001",
+    name: "Multi-Use Softening Hair Cleanser",
+    brand: "Melanin Haircare",
+    category: "Shampoo",
+    description: "Lightweight formula that softens and detangles while cleansing. Works for all curl types.",
+    image: "🧴",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: ALL_TYPES,
+    goals: ["moisture","definition","general"]
+  },
+  {
+    id: "nym-001",
+    name: "Curl Talk Frizz Control Shampoo",
+    brand: "Not Your Mother's",
+    category: "Shampoo",
+    description: "Affordable frizz-fighting shampoo packed with coconut oil and sweet almond oil.",
+    image: "🧴",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE3,
+    goals: ["definition","moisture","general"]
+  },
+  {
+    id: "kk-001",
+    name: "Come Clean Shampoo",
+    brand: "Kinky Curly",
+    category: "Shampoo",
+    description: "Mandarin orange extract removes buildup without disrupting curl pattern.",
+    image: "🧴",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["definition","general","repair"]
+  },
+
+  // ── CONDITIONERS ─────────────────────────────────────────────
+  {
+    id: "shea-002",
+    name: "Intensive Hydration Hair Masque",
+    brand: "SheaMoisture",
+    category: "Conditioner",
+    description: "Deep conditioning mask with African black soap and willow bark extract.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["moisture","repair","general"]
+  },
+  {
+    id: "cantu-002",
+    name: "Hydrating Cream Conditioner",
+    brand: "Cantu",
+    category: "Conditioner",
+    description: "Shea butter rinse-out conditioner that detangles and adds softness to coils.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE4,
+    goals: ["moisture","general","repair"]
+  },
+  {
+    id: "mielle-002",
+    name: "Pomegranate & Honey Conditioner",
+    brand: "Mielle",
+    category: "Conditioner",
+    description: "Honey and pomegranate restore softness and seal moisture into the hair shaft.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["moisture","repair","general"]
+  },
+  {
+    id: "pattern-001",
+    name: "Conditioner",
+    brand: "Pattern",
+    category: "Conditioner",
+    description: "Rich conditioner designed specifically for 3C–4C hair. Packed with shea and avocado oil.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: TYPE3C_UP,
+    goals: ["moisture","definition","general"]
+  },
+  {
+    id: "cd-001",
+    name: "Goddess Strength 7 Oil Blend Conditioner",
+    brand: "Carol's Daughter",
+    category: "Conditioner",
+    description: "Seven-oil blend that strengthens fragile strands and reduces breakage over time.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["repair","growth","general"]
+  },
+  {
+    id: "de-001",
+    name: "Stimulating Growth Conditioner",
+    brand: "Design Essentials",
+    category: "Conditioner",
+    description: "Peppermint and biotin conditioner that stimulates the scalp and promotes growth.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["growth","moisture","general"]
+  },
+
+  // ── DEEP CONDITIONERS ────────────────────────────────────────
+  {
+    id: "shea-003",
+    name: "Manuka Honey & Yogurt Hydrate + Repair Protein-Strong Treatment",
+    brand: "SheaMoisture",
+    category: "Deep Conditioner",
+    description: "Protein and moisture treatment that repairs bonds and boosts elasticity.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["repair","moisture","growth"]
+  },
+  {
+    id: "tgin-002",
+    name: "Honey Miracle Hair Mask",
+    brand: "TGIN",
+    category: "Deep Conditioner",
+    description: "Raw honey and olive oil deeply hydrate and strengthen dry, brittle coils.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: TYPE4,
+    goals: ["moisture","repair","general"]
+  },
+  {
+    id: "camrose-001",
+    name: "Algae Renew Deep Conditioning Mask",
+    brand: "Camille Rose",
+    category: "Deep Conditioner",
+    description: "Algae and sea kelp restore moisture balance and improve manageability.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["moisture","definition","general"]
+  },
+  {
+    id: "brio-002",
+    name: "Don't Despair, Repair! Deep Conditioning Mask",
+    brand: "Briogeo",
+    category: "Deep Conditioner",
+    description: "Rosehip oil, algae, and B-vitamins restore over-processed and damaged curls.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: ALL_TYPES,
+    goals: ["repair","moisture","general"]
+  },
+  {
+    id: "pattern-002",
+    name: "Deep Conditioning Mask",
+    brand: "Pattern",
+    category: "Deep Conditioner",
+    description: "Ultra-rich mask with shea, avocado, and jojoba for 3C–4C curl types.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: TYPE3C_UP,
+    goals: ["moisture","definition","repair"]
+  },
+  {
+    id: "mielle-003",
+    name: "Rosemary Mint Strengthening Hair Masque",
+    brand: "Mielle",
+    category: "Deep Conditioner",
+    description: "Biotin and rosemary stimulate growth while honey and mint strengthen each strand.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["growth","repair","moisture"]
+  },
+  {
+    id: "aj-001",
+    name: "Hydro Fuse Deep Moisture Repair Treatment",
+    brand: "Aunt Jackie's",
+    category: "Deep Conditioner",
+    description: "Intense moisture treatment for severely dry, damaged, and over-manipulated hair.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE4,
+    goals: ["moisture","repair","general"]
+  },
+  {
+    id: "mel-002",
+    name: "Triple Threat Protective Style Prep Treatment",
+    brand: "Melanin Haircare",
+    category: "Deep Conditioner",
+    description: "Strengthens and moisturizes before protective styling to minimize breakage.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: TYPE4,
+    goals: ["repair","growth","moisture"]
+  },
+
+  // ── LEAVE-IN CONDITIONERS ────────────────────────────────────
+  {
+    id: "asiam-002",
+    name: "Leave-In Conditioner",
+    brand: "As I Am",
+    category: "Leave-In Conditioner",
+    description: "Coconut milk and vitamin B5 detangle and prime all curl types for styling.",
+    image: "💧",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: ALL_TYPES,
+    goals: ["moisture","definition","general"]
+  },
+  {
+    id: "kk-002",
+    name: "Knot Today Leave In Conditioner & Detangler",
+    brand: "Kinky Curly",
+    category: "Leave-In Conditioner",
+    description: "Slippery botanical formula makes detangling pain-free and primes curls for styling.",
+    image: "💧",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["definition","moisture","general"]
+  },
+  {
+    id: "tgin-003",
+    name: "Triple Moisture Replenishing Leave-In Conditioner",
+    brand: "TGIN",
+    category: "Leave-In Conditioner",
+    description: "Three-butter blend keeps 4C hair moisturized between wash days.",
+    image: "💧",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: TYPE4,
+    goals: ["moisture","general","growth"]
+  },
+  {
+    id: "cantu-003",
+    name: "Leave-In Conditioning Repair Cream",
+    brand: "Cantu",
+    category: "Leave-In Conditioner",
+    description: "Shea butter leave-in that repairs split ends and tames frizz on all curl types.",
+    image: "💧",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: ALL_TYPES,
+    goals: ["repair","moisture","general"]
+  },
+  {
+    id: "shea-004",
+    name: "Strengthen & Restore Leave-In Conditioner",
+    brand: "SheaMoisture",
+    category: "Leave-In Conditioner",
+    description: "Jamaican black castor oil strengthens weakened curls between wash days.",
+    image: "💧",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: TYPE4,
+    goals: ["repair","growth","moisture"]
+  },
+  {
+    id: "mel-003",
+    name: "Leave-In Conditioner",
+    brand: "Melanin Haircare",
+    category: "Leave-In Conditioner",
+    description: "Aloe vera and marshmallow root deliver lasting hydration without heaviness.",
+    image: "💧",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: ALL_TYPES,
+    goals: ["moisture","definition","general"]
+  },
+  {
+    id: "nym-002",
+    name: "Curl Talk Leave-In Conditioner",
+    brand: "Not Your Mother's",
+    category: "Leave-In Conditioner",
+    description: "Budget-friendly coconut oil leave-in that softens and defines 3A–3C curls.",
+    image: "💧",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE3,
+    goals: ["definition","moisture","general"]
+  },
+  {
+    id: "brio-003",
+    name: "Farewell Frizz Rosarco Milk Leave-In Conditioning Spray",
+    brand: "Briogeo",
+    category: "Leave-In Conditioner",
+    description: "Rosehip and argan oil spray tames frizz and adds glossy shine to loose curls.",
+    image: "💧",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: TYPE3,
+    goals: ["definition","moisture","general"]
+  },
+
+  // ── CURL CREAMS ──────────────────────────────────────────────
+  {
+    id: "shea-005",
+    name: "Coconut & Hibiscus Curl Enhancing Smoothie",
+    brand: "SheaMoisture",
+    category: "Curl Cream",
+    description: "Fan-favorite curl cream that defines and moisturizes with coconut oil and hibiscus.",
+    image: "🌿",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: TYPE3C_UP,
+    goals: ["definition","moisture","general"]
+  },
+  {
+    id: "camrose-002",
+    name: "Curl Love Moisture Milk",
+    brand: "Camille Rose",
+    category: "Curl Cream",
+    description: "Lightweight milk that defines curls without buildup. Great for 3A–4A hair.",
+    image: "🌿",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ["3A","3B","3C","4A"],
+    goals: ["definition","moisture","general"]
+  },
+  {
+    id: "cantu-004",
+    name: "Coconut Curling Cream",
+    brand: "Cantu",
+    category: "Curl Cream",
+    description: "Defines and holds coils with a non-greasy shea butter and coconut formula.",
+    image: "🌿",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE3C_UP,
+    goals: ["definition","moisture","general"]
+  },
+  {
+    id: "pattern-003",
+    name: "Curl Gel",
+    brand: "Pattern",
+    category: "Curl Cream",
+    description: "Medium-hold cream-gel hybrid for defined, frizz-free coils and curls.",
+    image: "🌿",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: TYPE3C_UP,
+    goals: ["definition","general"]
+  },
+  {
+    id: "asiam-003",
+    name: "Twist Defining Cream",
+    brand: "As I Am",
+    category: "Curl Cream",
+    description: "Castor oil and green tea define twists and coils with flexible hold.",
+    image: "🌿",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: TYPE4,
+    goals: ["definition","moisture","general"]
+  },
+  {
+    id: "aj-002",
+    name: "Curl La La Defining Curl Custard",
+    brand: "Aunt Jackie's",
+    category: "Curl Cream",
+    description: "Shea butter custard that defines and elongates coils with a soft hold.",
+    image: "🌿",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE3C_UP,
+    goals: ["definition","moisture","general"]
+  },
+  {
+    id: "mel-004",
+    name: "Twist Elongating Cream",
+    brand: "Melanin Haircare",
+    category: "Curl Cream",
+    description: "Stretches and defines 4B/4C coils while keeping moisture locked in.",
+    image: "🌿",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: ["4B","4C"],
+    goals: ["definition","moisture","growth"]
+  },
+
+  // ── CURL GELS ────────────────────────────────────────────────
+  {
+    id: "kk-003",
+    name: "Curling Custard",
+    brand: "Kinky Curly",
+    category: "Curl Gel",
+    description: "Mango and pomegranate gel-custard provides firm hold without crunch or flaking.",
+    image: "🌀",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["definition","general"]
+  },
+  {
+    id: "ecostyler-001",
+    name: "Olive Oil Styling Gel",
+    brand: "Eco Styler",
+    category: "Curl Gel",
+    description: "Ultra-affordable olive oil gel with firm hold. A staple for all curl types.",
+    image: "🌀",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: ALL_TYPES,
+    goals: ["definition","general","moisture"]
+  },
+  {
+    id: "aj-003",
+    name: "Don't Shrink Elongating Curling Gel",
+    brand: "Aunt Jackie's",
+    category: "Curl Gel",
+    description: "Castor oil gel that stretches and elongates 4B/4C coils with light hold.",
+    image: "🌀",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE4,
+    goals: ["definition","growth","general"]
+  },
+  {
+    id: "shea-006",
+    name: "Coconut Custard Make It Last Wash N Go Gel",
+    brand: "SheaMoisture",
+    category: "Curl Gel",
+    description: "Coconut water gel that locks in curl definition for extended wash-and-go wear.",
+    image: "🌀",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: TYPE3C_UP,
+    goals: ["definition","moisture","general"]
+  },
+  {
+    id: "camrose-003",
+    name: "Natural Define & Shine Pudding",
+    brand: "Camille Rose",
+    category: "Curl Gel",
+    description: "Sweet almond oil and agave define curls and add brilliant shine.",
+    image: "🌀",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ["3A","3B","3C","4A"],
+    goals: ["definition","moisture","general"]
+  },
+  {
+    id: "de-002",
+    name: "Curl Defining Custard Gel",
+    brand: "Design Essentials",
+    category: "Curl Gel",
+    description: "Professional-grade custard gel with medium hold for defined, bouncy curls.",
+    image: "🌀",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["definition","general"]
+  },
+
+  // ── MOUSSES ──────────────────────────────────────────────────
+  {
+    id: "shea-007",
+    name: "Coconut & Hibiscus Frizz-Free Curl Mousse",
+    brand: "SheaMoisture",
+    category: "Mousse",
+    description: "Lightweight mousse for 3A–3C curls that adds volume without crunch.",
+    image: "🧊",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: TYPE3,
+    goals: ["definition","moisture","general"]
+  },
+  {
+    id: "cantu-005",
+    name: "Moisturizing Curl Activator",
+    brand: "Cantu",
+    category: "Mousse",
+    description: "Activates and defines curl pattern while adding flexible hold and shine.",
+    image: "🧊",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: ALL_TYPES,
+    goals: ["definition","moisture","general"]
+  },
+  {
+    id: "nym-003",
+    name: "Curl Talk Defining Mousse",
+    brand: "Not Your Mother's",
+    category: "Mousse",
+    description: "Coconut oil mousse delivers defined, frizz-free curls at a drugstore price.",
+    image: "🧊",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE3,
+    goals: ["definition","general"]
+  },
+  {
+    id: "pattern-004",
+    name: "Styling Mousse",
+    brand: "Pattern",
+    category: "Mousse",
+    description: "Weightless foam delivers touchable hold and curl memory for 3C–4C types.",
+    image: "🧊",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: TYPE3C_UP,
+    goals: ["definition","general"]
+  },
+
+  // ── HAIR OILS ────────────────────────────────────────────────
+  {
+    id: "mielle-004",
+    name: "Rosemary Mint Scalp & Hair Strengthening Oil",
+    brand: "Mielle",
+    category: "Hair Oil",
+    description: "Rosemary and mint stimulate scalp circulation to encourage growth.",
+    image: "🌿",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["growth","moisture","general"]
+  },
+  {
+    id: "shea-008",
+    name: "100% Pure Jamaican Black Castor Oil",
+    brand: "SheaMoisture",
+    category: "Growth Oil",
+    description: "Pure JBCO thickens and strengthens strands while sealing in moisture.",
+    image: "🛢️",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: TYPE4,
+    goals: ["growth","moisture","repair"]
+  },
+  {
+    id: "cd-002",
+    name: "Black Vanilla Hair Gloss Oil",
+    brand: "Carol's Daughter",
+    category: "Hair Oil",
+    description: "Lightweight blend of sweet almond and jojoba adds shine without greasiness.",
+    image: "🌿",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["moisture","definition","general"]
+  },
+  {
+    id: "ap-001",
+    name: "Braid Sheen Oil Spray",
+    brand: "African Pride",
+    category: "Hair Oil",
+    description: "Olive oil spray adds sheen and prevents breakage under protective styles.",
+    image: "🛢️",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE4,
+    goals: ["growth","moisture","general"]
+  },
+  {
+    id: "tgin-004",
+    name: "Argan Oil of Morocco Strengthening Treatment",
+    brand: "TGIN",
+    category: "Hair Oil",
+    description: "Pure argan oil treatment that repairs and strengthens heat-damaged strands.",
+    image: "🌿",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["repair","moisture","general"]
+  },
+  {
+    id: "de-003",
+    name: "Natural Hair Oil Treatment",
+    brand: "Design Essentials",
+    category: "Growth Oil",
+    description: "Peppermint and biotin oil stimulates the scalp to encourage healthy growth.",
+    image: "🛢️",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["growth","moisture","general"]
+  },
+
+  // ── SCALP TREATMENTS ─────────────────────────────────────────
+  {
+    id: "mielle-005",
+    name: "Rosemary Mint Strengthening Edge Gel",
+    brand: "Mielle",
+    category: "Scalp Treatment",
+    description: "Edges and scalp treatment that lays edges while nourishing hair follicles.",
+    image: "✨",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["growth","general"]
+  },
+  {
+    id: "brio-004",
+    name: "Scalp Revival Charcoal + Tea Tree Scalp Treatment",
+    brand: "Briogeo",
+    category: "Scalp Treatment",
+    description: "Charcoal and tea tree exfoliate and balance an oily or flaky scalp.",
+    image: "✨",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: ALL_TYPES,
+    goals: ["growth","repair","general"]
+  },
+  {
+    id: "shea-009",
+    name: "Jamaican Black Castor Oil Strengthen & Restore Scalp Treatment",
+    brand: "SheaMoisture",
+    category: "Scalp Treatment",
+    description: "JBCO and shea nourish a dry, itchy scalp and promote thicker growth.",
+    image: "✨",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: TYPE4,
+    goals: ["growth","moisture","repair"]
+  },
+  {
+    id: "cd-003",
+    name: "Scalp Serum",
+    brand: "Carol's Daughter",
+    category: "Scalp Treatment",
+    description: "Lightweight serum with caffeine and biotin to invigorate and strengthen roots.",
+    image: "✨",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["growth","repair","general"]
+  },
+
+  // ── PROTEIN TREATMENTS ───────────────────────────────────────
+  {
+    id: "ap-002",
+    name: "Moisture Miracle Honey & Coconut Oil Hair Mask",
+    brand: "African Pride",
+    category: "Protein Treatment",
+    description: "Honey and coconut oil mask rebuilds fragile strands and restores elasticity.",
+    image: "🔬",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE4,
+    goals: ["repair","moisture","general"]
+  },
+  {
+    id: "shea-010",
+    name: "Jamaican Black Castor Oil Strengthen & Restore Treatment Masque",
+    brand: "SheaMoisture",
+    category: "Protein Treatment",
+    description: "Peppermint and JBCO protein masque rebuilds and fortifies over-processed hair.",
+    image: "🔬",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["repair","growth","moisture"]
+  },
+  {
+    id: "brio-005",
+    name: "Strength & Length Repairing Treatment",
+    brand: "Briogeo",
+    category: "Protein Treatment",
+    description: "Biotin, B-vitamins, and algae strengthen bonds and reduce breakage.",
+    image: "🔬",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: ALL_TYPES,
+    goals: ["repair","growth","general"]
+  },
+  {
+    id: "aj-004",
+    name: "Quench! Intense Moisture Treatment",
+    brand: "Aunt Jackie's",
+    category: "Protein Treatment",
+    description: "Olive and coconut oil treatment that restores protein-moisture balance in coils.",
+    image: "🔬",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE4,
+    goals: ["repair","moisture","general"]
+  },
+
+  // ── HAIR BUTTERS ─────────────────────────────────────────────
+  {
+    id: "camrose-004",
+    name: "Rosemary Strengthening Hair Butter",
+    brand: "Camille Rose",
+    category: "Hair Butter",
+    description: "Rosemary and shea butter seal moisture into 4B/4C coils and reduce breakage.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ["4B","4C"],
+    goals: ["moisture","repair","growth"]
+  },
+  {
+    id: "shea-011",
+    name: "Raw Shea Butter",
+    brand: "SheaMoisture",
+    category: "Hair Butter",
+    description: "Pure raw shea butter seals in moisture and protects against environmental damage.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE4,
+    goals: ["moisture","repair","general"]
+  },
+  {
+    id: "tgin-005",
+    name: "Butter Cream Daily Moisturizer",
+    brand: "TGIN",
+    category: "Hair Butter",
+    description: "Whipped shea butter cream that moisturizes daily without heavy residue.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: TYPE4,
+    goals: ["moisture","general","definition"]
+  },
+  {
+    id: "aj-005",
+    name: "Butter Babe Moisturizing Butter",
+    brand: "Aunt Jackie's",
+    category: "Hair Butter",
+    description: "Mango and shea butter blend that seals and softens coarse, dry hair.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE4,
+    goals: ["moisture","general","repair"]
+  },
+  {
+    id: "mel-005",
+    name: "Style Elongating Twisting Butter",
+    brand: "Melanin Haircare",
+    category: "Hair Butter",
+    description: "Defines and elongates twists and braids while sealing in moisture.",
+    image: "🫙",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: TYPE4,
+    goals: ["definition","moisture","general"]
+  },
+
+  // ── HAIR MASKS ───────────────────────────────────────────────
+  {
+    id: "brio-006",
+    name: "Avocado + Kiwi Mega Moisture Superfood Hair Mask",
+    brand: "Briogeo",
+    category: "Hair Mask",
+    description: "Superfood blend of avocado, kiwi, and banana delivers intense hydration.",
+    image: "🎭",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: ALL_TYPES,
+    goals: ["moisture","repair","general"]
+  },
+  {
+    id: "cd-004",
+    name: "Pracaxi Nectar Tangle-Taming Leave-In Mask",
+    brand: "Carol's Daughter",
+    category: "Hair Mask",
+    description: "Pracaxi and monoi oils smooth and detangle even the most stubborn knots.",
+    image: "🎭",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["repair","moisture","definition"]
+  },
+  {
+    id: "ap-003",
+    name: "Moisture Miracle Leave-In Conditioning Mask",
+    brand: "African Pride",
+    category: "Hair Mask",
+    description: "Coconut and honey mask strengthens and softens dry 4C hair.",
+    image: "🎭",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE4,
+    goals: ["moisture","repair","general"]
+  },
+  {
+    id: "mielle-006",
+    name: "Mongongo Oil Protein-Free Hydrating Masque",
+    brand: "Mielle",
+    category: "Hair Mask",
+    description: "Protein-free masque ideal for high-porosity hair that is protein-sensitive.",
+    image: "🎭",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["moisture","general","repair"]
+  },
+
+  // ── HEAT PROTECTANTS ─────────────────────────────────────────
+  {
+    id: "cantu-006",
+    name: "Thermal Shield Heat Protectant",
+    brand: "Cantu",
+    category: "Heat Protectant",
+    description: "Shea butter heat protectant guards against temperatures up to 400°F.",
+    image: "🔥",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: ALL_TYPES,
+    goals: ["repair","general","moisture"]
+  },
+  {
+    id: "shea-012",
+    name: "Jamaican Black Castor Oil Heat Protectant",
+    brand: "SheaMoisture",
+    category: "Heat Protectant",
+    description: "JBCO and silk protect from heat damage while adding smoothness and shine.",
+    image: "🔥",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["repair","moisture","general"]
+  },
+  {
+    id: "de-004",
+    name: "Thermal Protectant Serum",
+    brand: "Design Essentials",
+    category: "Heat Protectant",
+    description: "Professional serum that protects up to 450°F and reduces frizz during blowouts.",
+    image: "🔥",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["repair","definition","general"]
+  },
+  {
+    id: "cd-005",
+    name: "Heat & Tangle Tamer",
+    brand: "Carol's Daughter",
+    category: "Heat Protectant",
+    description: "Detangles while protecting heat-styled curls from damage and breakage.",
+    image: "🔥",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["repair","moisture","general"]
+  },
+
+  // ── EDGE CONTROL ─────────────────────────────────────────────
+  {
+    id: "cantu-007",
+    name: "Extra Hold Edge Stay Gel",
+    brand: "Cantu",
+    category: "Edge Control",
+    description: "Firm-hold edge gel with shea butter keeps edges smooth all day.",
+    image: "✨",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: ALL_TYPES,
+    goals: ["definition","general"]
+  },
+  {
+    id: "de-005",
+    name: "Super Hold Edge Control",
+    brand: "Design Essentials",
+    category: "Edge Control",
+    description: "Professional-strength hold for sleek edges on natural and relaxed hair.",
+    image: "✨",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["definition","general"]
+  },
+  {
+    id: "mielle-007",
+    name: "Honey & Ginger Edge Gel",
+    brand: "Mielle",
+    category: "Edge Control",
+    description: "Nourishing honey and ginger formula that holds edges while promoting growth.",
+    image: "✨",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["growth","definition","general"]
+  },
+  {
+    id: "ap-004",
+    name: "Olive Oil Smooth-N-Hold Pudding",
+    brand: "African Pride",
+    category: "Edge Control",
+    description: "Olive oil pudding smooths edges and styles coils with flexible hold.",
+    image: "✨",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE4,
+    goals: ["definition","moisture","general"]
+  },
+
+  // ── STYLING FOAMS ────────────────────────────────────────────
+  {
+    id: "mel-006",
+    name: "Volumizing Foam",
+    brand: "Melanin Haircare",
+    category: "Styling Foam",
+    description: "Lightweight foam adds volume and definition to 3C–4C curl patterns.",
+    image: "🧊",
+    affiliateLink: "",
+    budget: MID_HIGH,
+    hairTypes: TYPE3C_UP,
+    goals: ["definition","general","moisture"]
+  },
+  {
+    id: "doux-002",
+    name: "Mousse Def Texture Foam",
+    brand: "The Doux",
+    category: "Styling Foam",
+    description: "Whipped foam defines curls and coils with a bouncy, touchable hold.",
+    image: "🧊",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["definition","general"]
+  },
+  {
+    id: "shea-013",
+    name: "Coconut & Hibiscus Hold & Shine Moisture Mist",
+    brand: "SheaMoisture",
+    category: "Styling Foam",
+    description: "Refreshing mist that revives curls between wash days with added shine.",
+    image: "🧊",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: TYPE3C_UP,
+    goals: ["definition","moisture","general"]
+  },
+
+  // ── BONUS: ADDITIONAL PRODUCTS ───────────────────────────────
+  {
+    id: "doux-003",
+    name: "Big Poppa Frizz Pudding",
+    brand: "The Doux",
+    category: "Curl Cream",
+    description: "Coconut milk and silk amino acids define coils while fighting humidity-induced frizz.",
+    image: "🌿",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: TYPE3C_UP,
+    goals: ["definition","moisture","general"]
+  },
+  {
+    id: "camrose-005",
+    name: "Sweet Ginger Cleansing Rinse",
+    brand: "Camille Rose",
+    category: "Shampoo",
+    description: "ACV and ginger clarify buildup while balancing the scalp for healthy growth.",
+    image: "🧴",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["growth","repair","general"]
+  },
+  {
+    id: "ap-005",
+    name: "Moisture Miracle Softening Shampoo",
+    brand: "African Pride",
+    category: "Shampoo",
+    description: "Honey and coconut oil shampoo softens and preps 4C hair for styling.",
+    image: "🧴",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE4,
+    goals: ["moisture","general"]
+  },
+  {
+    id: "tgin-006",
+    name: "Green Tea Super Moist Leave-In Conditioner",
+    brand: "TGIN",
+    category: "Leave-In Conditioner",
+    description: "Green tea antioxidants and shea butter deliver lasting moisture on the go.",
+    image: "💧",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["moisture","general","repair"]
+  },
+  {
+    id: "kk-004",
+    name: "Original Curling Custard",
+    brand: "Kinky Curly",
+    category: "Curl Gel",
+    description: "Pomegranate and other organic ingredients define curls with a strong, crunch-free hold.",
+    image: "🌀",
+    affiliateLink: "",
+    budget: ["low","mid"],
+    hairTypes: ALL_TYPES,
+    goals: ["definition","general"]
+  },
+  {
+    id: "nym-004",
+    name: "Naturals Curl Defining Styling Cream",
+    brand: "Not Your Mother's",
+    category: "Curl Cream",
+    description: "Avocado oil and shea butter define curls with a smooth, frizz-free finish.",
+    image: "🌿",
+    affiliateLink: "",
+    budget: ["low"],
+    hairTypes: TYPE3,
+    goals: ["definition","moisture","general"]
+  }
+
+]; // ← end of productDatabase — add new products above this line
+
+
+/* =============================================================
+   RECOMMENDATION ENGINE
+   ---------------------------------------------------------------
+   Scores every product in the database against the user's answers.
+   Returns the top 6 best matches.
+
+   SCORING RULES (feel free to adjust the point values):
+     Goal match       → +10 pts  (most important)
+     Hair type match  → +5  pts
+     Budget match     → +3  pts
+     Bonus: "general" goal always scores +2 (universally useful)
+     Bonus: unsure hair type → all hair types score +3 (we include everything)
+
+   To add products: paste into productDatabase above.
+   Never edit this function when adding products.
+   ============================================================= */
+function getRecommendedProducts(answers) {
+  const userGoal    = answers.goal      || "general";
+  const userType    = answers.pattern   || "unsure";
+  const userBudget  = answers.budget    || "mid";
+
+  // Score each product in the database
+  const scored = productDatabase.map(product => {
+    let score = 0;
+
+    // ── Goal matching (+10 for exact match, +2 if product covers "general") ──
+    if (product.goals.includes(userGoal)) {
+      score += 10;
+    }
+    // Products tagged "general" are always somewhat relevant
+    if (product.goals.includes("general") && userGoal !== "general") {
+      score += 2;
+    }
+    // When the user's own goal IS general, make it a full match
+    if (userGoal === "general" && product.goals.includes("general")) {
+      score += 8; // already got 10 above, this is intentionally not additive
+    }
+
+    // ── Hair type matching (+5 for exact match, +3 if unsure = all types eligible) ──
+    if (userType === "unsure") {
+      // "unsure" users benefit from all products — light bonus for all
+      score += 3;
+    } else if (product.hairTypes.includes(userType)) {
+      score += 5;
+    }
+
+    // ── Budget matching (+3 for exact match) ──
+    if (product.budget.includes(userBudget)) {
+      score += 3;
+    }
+
+    // ── Bonus: extra points for dryness + moisture-focused products ──
+    if (answers.dryness === "frequently" && product.goals.includes("moisture")) {
+      score += 3;
+    }
+
+    // ── Bonus: protective style wearers benefit from repair/growth products ──
+    if (answers.protective === "often" &&
+        (product.goals.includes("repair") || product.goals.includes("growth"))) {
+      score += 2;
+    }
+
+    return { product, score };
+  });
+
+  // Sort by score, highest first
+  scored.sort((a, b) => b.score - a.score);
+
+  // Deduplicate by category — try to surface variety (max 2 per category)
+  const categoryCounts = {};
+  const recommended = [];
+
+  for (const { product } of scored) {
+    const cat = product.category;
+    categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+
+    // Allow max 2 products per category, but always fill 6 slots
+    if (categoryCounts[cat] <= 2) {
+      recommended.push(product);
+    }
+    if (recommended.length >= 6) break;
+  }
+
+  // If still under 6 (edge case), fill from the rest of scored list
+  if (recommended.length < 6) {
+    const ids = new Set(recommended.map(p => p.id));
+    for (const { product } of scored) {
+      if (!ids.has(product.id)) {
+        recommended.push(product);
+        if (recommended.length >= 6) break;
+      }
+    }
+  }
+
+  return recommended;
+}
+
+
+/* =============================================================
+   AFFILIATE LINK HANDLER
+   ---------------------------------------------------------------
+   Opens the product's own affiliateLink in a new tab.
+   If the link is blank, shows a friendly "coming soon" message.
+   When you paste real URLs into the database, buttons auto-work.
+   ============================================================= */
+function handleProduct(affiliateLink) {
+  if (affiliateLink && affiliateLink.trim() !== "") {
+    window.open(affiliateLink, "_blank", "noopener,noreferrer");
+  } else {
+    showToast("Affiliate link coming soon! 🔗");
+  }
+}
+
+function getRoutine(a) {
+  const pattern = a.pattern || 'unsure';
+  const goal = a.goal || 'general';
+  const dryness = a.dryness || 'sometimes';
+
+  // Determine type group
+  const isType3 = ['3A','3B','3C'].includes(pattern);
+  const isLooseType4 = pattern === '4A';
+  const isType4BC = ['4B','4C'].includes(pattern);
+  const isUnsure = pattern === 'unsure';
+
+  // --- Routine A: Type 3 or lower-dryness 4A ---
+  if (isType3 || (isLooseType4 && dryness !== 'frequently')) {
+    return {
+      typeCode: pattern === 'unsure' ? '3A–3C' : pattern,
+      typeName: 'Loose to Medium Curls',
+      tagline: 'Your curls thrive on lightweight moisture and gentle cleansing. Less is often more.',
+      washDay: [
+        { name: 'Pre-poo treatment', desc: 'Apply a light oil (coconut or argan) to dry hair 30 minutes before washing to protect curls from stripping.' },
+        { name: 'Co-wash or gentle shampoo', desc: 'Use a sulfate-free shampoo or conditioner wash. Focus cleansing on the scalp, not the ends.' },
+        { name: 'Deep condition', desc: 'Apply a lightweight deep conditioner for 15–20 minutes with a shower cap. Rinse thoroughly.' },
+        { name: 'Apply leave-in conditioner', desc: 'Work a small amount through damp hair in sections for even coverage.' },
+        { name: 'Style with cream or gel', desc: 'Apply curl cream first, then seal with a light-hold gel. Scrunch gently.' },
+        { name: 'Diffuse or air dry', desc: 'Use a diffuser on low heat or let air dry fully before touching to avoid frizz.' },
+      ],
+      moistureTips: [
+        { icon: '💧', text: '<strong>LOC method:</strong> Liquid (water), Oil (light), Cream (curl cream) — layer products in this order for lasting moisture.' },
+        { icon: '🌙', text: '<strong>Pineapple overnight:</strong> Loosely gather hair at the top of your head before bed to preserve curl shape.' },
+        { icon: '🧴', text: '<strong>Refresh mid-week:</strong> Mix water and leave-in conditioner in a spray bottle. Spray and scrunch to revive curls.' },
+        { icon: '🌡️', text: '<strong>Avoid heat daily:</strong> Save heat styling for special occasions. Air or diffuse-dry whenever possible.' },
+      ]
+    };
+  }
+
+  // --- Routine B: 4A with frequent dryness, or goal = moisture/repair ---
+  if (isLooseType4 || (isType4BC && goal !== 'growth') || goal === 'moisture' || goal === 'repair') {
+    return {
+      typeCode: pattern === 'unsure' ? '4A–4B' : pattern,
+      typeName: 'Coily & Thirsty Curls',
+      tagline: 'Your coils need rich, consistent moisture. Layering and sealing are your superpowers.',
+      washDay: [
+        { name: 'Pre-poo with oil or mask', desc: 'Saturate hair with olive oil or a moisturizing mask the night before or 1 hour before washing.' },
+        { name: 'Clarify once a month', desc: 'Use a clarifying shampoo monthly to remove buildup. All other washes: gentle or sulfate-free only.' },
+        { name: 'Deep condition every wash', desc: 'Apply a rich deep conditioner (shea butter-based) for 30+ minutes under a heat cap or steam for maximum penetration.' },
+        { name: 'Detangle gently in sections', desc: 'Use a wide-tooth comb or fingers on slippery conditioner-soaked hair. Always detangle from ends to roots.' },
+        { name: 'LOC or LCO method', desc: 'Apply leave-in conditioner → oil → cream (or swap oil and cream order based on your hair\'s preference).' },
+        { name: 'Twist or braid out to style', desc: 'Twist or two-strand twist damp hair and let dry completely before unraveling for a defined style.' },
+      ],
+      moistureTips: [
+        { icon: '🫙', text: '<strong>Seal with butter:</strong> Shea or mango butter seals moisture better than liquid products alone — use as your final step.' },
+        { icon: '💦', text: '<strong>Hydrate daily:</strong> Lightly mist hair with water every morning and follow with a tiny amount of oil to seal.' },
+        { icon: '🧢', text: '<strong>Satin is essential:</strong> Sleep on a satin pillowcase or use a satin bonnet every night to reduce moisture loss.' },
+        { icon: '🛁', text: '<strong>Steam treatments:</strong> Once a month, steam your deep conditioner in for 20 minutes — heat opens the cuticle for deeper hydration.' },
+      ]
+    };
+  }
+
+  // --- Routine C: 4C or growth-focused ---
+  return {
+    typeCode: pattern === 'unsure' ? '4B–4C' : pattern,
+    typeName: 'Tight Coils & Growth Focus',
+    tagline: 'Your hair is dense, resilient, and beautiful. It needs protection, patience, and consistent love.',
+    washDay: [
+      { name: 'Pre-poo with protein or oil', desc: 'Apply a protein treatment or heavy oil blend to dry hair the night before wash day. Cover with a plastic cap.' },
+      { name: 'Shampoo in sections', desc: 'Divide hair into 4–6 sections. Shampoo each section individually to prevent tangling and breakage.' },
+      { name: 'Protein then moisture deep condition', desc: 'Alternate between protein treatments and moisturizing deep conditioners each wash to maintain the moisture-protein balance.' },
+      { name: 'Detangle with care', desc: 'Only detangle while hair has conditioner in it. Use a wide-tooth comb or Denman brush, always from ends to roots.' },
+      { name: 'LCO method', desc: 'Apply leave-in first, then curl cream to coat the strand, then seal with a heavy oil or butter (castor oil is great for 4C).' },
+      { name: 'Protective style to stretch', desc: 'Stretch hair in twists or braids while drying to reduce shrinkage and minimize single-strand knots.' },
+    ],
+    moistureTips: [
+      { icon: '🌿', text: '<strong>Castor oil seal:</strong> Jamaican black castor oil is a 4C staple — apply to your scalp weekly to promote growth and seal moisture into ends.' },
+      { icon: '🛡️', text: '<strong>Protective styles:</strong> Wear braids, twists, or updos to protect ends and reduce daily manipulation. Give your hair a break!' },
+      { icon: '📅', text: '<strong>Consistent schedule:</strong> Wash every 1–2 weeks. Consistency matters more than perfection — your hair thrives on routine.' },
+      { icon: '✂️', text: '<strong>Trim every 8–12 weeks:</strong> Regular trims prevent split ends from traveling up the strand and causing more breakage.' },
+    ]
+  };
+}
+
+function restartQuiz() {
+  current = 0; answers = {};
+  startQuiz();
+}
+
+function saveResults() {
+  const data = {
+    date: new Date().toLocaleDateString(),
+    answers,
+  };
+  try {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'curl-compass-results.txt';
+    a.click(); URL.revokeObjectURL(url);
+    showToast('Results saved!');
+  } catch(e) {
+    // Fallback: print page
+    window.print();
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
